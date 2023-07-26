@@ -7,22 +7,53 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
+<style>
+    #box_son {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+
+    #box_boxson {
+        width: 100px;
+        height: 100px;
+        background-color: cornflowerblue;
+    }
+</style>
 
 <body>
     <div id="box">
         <h1>{{message}}</h1>
         <input type="text" v-model="shuj" name="" id="">{{shuj}}
+        <button @click="fun">点击</button>
+        <a href="#" @click.once="funfun">222</a>
+        <div id="box_son" @click="oneBox">
+            <div id="box_boxson" @click.stop="twoBox"></div>
+        </div>
     </div>
 </body>
 <script>
     new Vue({
         el: "#box",
-
         data: {
             message: "Hello Chao",
             shuj: ""
-
         },
+        methods: {
+            oneBox() {
+                console.log(99999);
+            },
+            twoBox() {
+                console.log(88888);
+            },
+            fun() {
+                console.log(21);
+                alert("什么档次")
+            },
+            funfun() {
+                console.log(11);
+            }
+        }
     });
 </script>
 
