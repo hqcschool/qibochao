@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    img {
+        width: 40px;
+        border-radius: 5px;
+        height: 40px;
+    }
+
+    #box {
+        width: 100%;
+        margin: auto;
+    }
+
+    table thead tr {
+        height: 40px;
+    }
+
+    table tbody tr {
+        height: 55px;
+    }
+
+    table {
+        width: 80%;
+        margin: auto;
+    }
+
+    button {
+        width: 70px;
+        height: 35px;
+        background-color: cornflowerblue;
+        border: 1px solid cornflowerblue;
+        margin-left: 10px;
+        border-radius: 10px;
+        color: #fff;
+    }
+
+    button:nth-child(2) {
+        background-color: crimson;
+        border: 1px solid crimson;
+    }
+
+    button:nth-child(3) {
+        border: 1px solid rgb(143, 239, 47);
+        background-color: rgb(143, 239, 47);
+    }
+
+    input {
+        width: 370px;
+        height: 35px;
+    }
+
+    #boxtop {
+        width: 80%;
+        margin: auto;
+        justify-content: space-between;
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    #forms {
+        color: #fff;
+        width: 420px;
+        background-color: darkslateblue;
+        text-align: center;
+        line-height: 60px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+    <div id="box">
+        <div id="boxtop">
+            <input type="text" name="" id="" placeholder="请输入相关类型" @keyup="searchfun()" v-model="search"> <button
+                @click="added">新增人物</button>
+        </div>
+        <table border="1" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>名字</th>
+                    <th>年龄</th>
+                    <th style="width: 320px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in flag?newarr:tabulation">
+                    <th>
+                        <img :src="item.image" alt="" />
+                    </th>
+                    <th>{{ item.name }}</th>
+                    <th>{{ item.age }}</th>
+                    <th>
+                        <button @click="bianji(index)">编辑人物</button>
+                        <button @click="deleteNews(index)">删除人物</button>
+                        <button @click="views(index)">查看人物</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 添加 -->
+        <div id="forms" v-if="isShowPopup">
+            头像:<input type="text" v-model="image" /> <br />
+            姓名:<input type="text" v-model="name" /> <br />
+            年龄:<input type="text" v-model="age" /> <br />
+            <button @click="addItem" v-show="guancha">{{increase}}</button>
+            <button @click="closebox">{{close}}</button>
+        </div>
+    </div>
+</body>
+<script>
+
+    new Vue({
+        el: "#box",
+        data: {
+            increase: "添加",
+            close: "关闭",
+            guancha: true,
+            isShowPopup: false, //关闭添加box
+            name: "",
+            age: "",
+            search: "",
+            flag: false,
+            add: '',
+            image: "",
+            tabulation: [
+                {
+                    name: "小明",
+                    age: "18",
+                    image:
+                        "https://img0.baidu.com/it/u=2144249378,1518177216&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=8d173e5be198fd00ce1f4a3257d69a02",
+                },
+                {
+                    age: "28",
+                    name: "小美",
+                    image:
+                        "https://img1.baidu.com/it/u=2104662631,3018865509&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=189c27068f1f8b333af0ac78e0e25f2c",
+                },
+                {
+                    age: "20",
+                    name: "小红",
+                    image:
+                        "https://img0.baidu.com/it/u=4151108596,3054451010&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=a0f85b26254a3d89b2e52e546c934f66",
+                },
+                {
+                    age: "25",
+                    name: "小奶",
+                    image:
+                        "https://img0.baidu.com/it/u=3354213321,3716446572&fm=253&fmt=auto&app=138&f=JPEG?w=503&h=500",
+                },
+            ],
+        },
+        methods: {
+            closebox() {
+                this.isShowPopup = false
+            },
+            added() {
+                this.isShowPopup = true
+                this.guancha = true
+                this.close = '取消添加';
+                this.increase = '添加'
+            },
+            // 删除
+            deleteNews(index) {
+                const thit = this
+                if (confirm("确定删除吗")) {
+                    thit.tabulation.splice(index, 1);
+                }
+            },
+            // 编辑
+            bianji(index) {
+                this.guancha = true
+
+                this.increase = '确认修改'
+                this.close = '取消修改'
+                this.add = index
+                this.isShowPopup = true,
+                    (this.name = this.tabulation[index].name),
+                    (this.age = this.tabulation[index].age),
+                    (this.image = this.tabulation[index].image)
+            },
+            // 添加
+            addItem() {
+                if (this.increase == '添加') {
+                    if (this.name && this.age && this.image) {
+                        this.tabulation.push({
+                            name: this.name,
+                            age: this.age,
+                            image: this.image,
+                        });
+                        console.log(this.tabulation)
+                        this.isShowPopup = false
+
+                    }
+                } else {
+                    this.tabulation[this.add].name = this.name;
+                    this.tabulation[this.add].age = this.age;
+                    this.tabulation[this.add].image = this.image;
+                }
+            },
+            // 搜索
+            searchfun() {
+                if (this.search != "") {
+                    this.flag = true;
+                    this.newarr = this.tabulation.filter((item) => {
+                        if (item.name.includes(this.search)) {
+                            return item;
+                        }
+                    });
+                } else {
+                    this.flag = false;
+                }
+            },
+            // 查看
+            views(index) {
+                this.guancha = false
+                this.isShowPopup = true
+                this.close = '取消查看';
+                (this.name = this.tabulation[index].name),
+                    (this.age = this.tabulation[index].age),
+                    (this.image = this.tabulation[index].image)
+            },
+
+        }
+
+    })
+</script>
+
+</html>
