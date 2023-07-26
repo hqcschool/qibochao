@@ -82,6 +82,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
+
+    #calculator {
+        width: 80%;
+        margin: auto;
+        margin-top: 30px;
+    }
 </style>
 
 <body>
@@ -122,6 +128,10 @@
             <button @click="addItem" v-show="guancha">{{increase}}</button>
             <button @click="closebox">{{close}}</button>
         </div>
+        <div id="calculator">
+            <input v-model="expression" @input="calculate" type="text" placeholder="输入表达式">
+            <p>{{ result }}</p>
+        </div>
     </div>
 </body>
 <script>
@@ -129,6 +139,8 @@
     new Vue({
         el: "#box",
         data: {
+            expression: '',
+            result: '',
             increase: "添加",
             close: "关闭",
             guancha: true,
@@ -167,6 +179,14 @@
             ],
         },
         methods: {
+            // 计算
+            calculate() {
+                try {
+                    this.result = eval(this.expression);
+                } catch (error) {
+                    this.result = '请输入完整';
+                }
+            },
             closebox() {
                 this.isShowPopup = false
             },
