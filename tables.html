@@ -38,6 +38,17 @@
         margin: auto;
     }
 
+    #forms button {
+        width: 70px;
+        height: 35px;
+        background-color: cornflowerblue;
+        border: 1px solid cornflowerblue;
+        margin-left: 10px;
+        border-radius: 10px;
+        margin-top: 15px;
+        color: #fff;
+    }
+
     button {
         width: 70px;
         height: 35px;
@@ -72,21 +83,37 @@
     }
 
     #forms {
+        padding: 5px;
+        height: 240px;
         color: #fff;
+        border-radius: 5px;
         width: 420px;
         background-color: darkslateblue;
         text-align: center;
-        line-height: 60px;
+        /* line-height: 60px; */
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 
+    input {
+        margin-top: 15px;
+    }
+
     #calculator {
         width: 80%;
         margin: auto;
         margin-top: 30px;
+    }
+
+    #topboximg {
+        display: flex;
+        /* margin-top: 120px; */
+    }
+
+    #topboximg img {
+        margin-top: 10px;
     }
 </style>
 
@@ -122,8 +149,12 @@
         </table>
         <!-- 添加 -->
         <div id="forms" v-if="isShowPopup">
-            头像:<input type="text" v-model="image" /> <br />
-            姓名:<input type="text" v-model="name" /> <br />
+            <div id="topboximg">
+                <span v-show="toxiangyin" style="margin-top: 20px;">头像：</span>
+                <div v-html="image" v-show="toxiangyin"></div>
+            </div>
+            <span v-show="twoimg">头像:</span> <input type="text" v-model="image" v-show="twoimg" /> <br />
+            姓名:<input type="text" v-model="name" id="wocaoq" /> <br />
             年龄:<input type="text" v-model="age" /> <br />
             <button @click="addItem" v-show="guancha">{{increase}}</button>
             <button @click="closebox">{{close}}</button>
@@ -138,6 +169,9 @@
     new Vue({
         el: "#box",
         data: {
+            twoimg: true,
+            toxiangyin: true,
+
             expression: '',
             result: '',
             increase: "添加",
@@ -194,6 +228,12 @@
                 this.guancha = true
                 this.close = '取消添加';
                 this.increase = '添加'
+                this.name = ""
+                this.image = ""
+                this.age = ""
+                this.twoimg = true
+                this.toxiangyin = false
+
             },
             // 删除
             deleteNews(index) {
@@ -204,9 +244,11 @@
             },
             // 编辑
             bianji(index) {
-                this.guancha = true
-
-                this.increase = '确认修改'
+                this.twoimg = true,
+                    this.guancha = true
+                this.toxiangyin = false,
+                    this.toxiangyin1 = false,
+                    this.increase = '确认修改'
                 this.close = '取消修改'
                 this.add = index
                 this.isShowPopup = true,
@@ -248,12 +290,19 @@
             },
             // 查看
             views(index) {
-                this.guancha = false
+                this.twoimg = false,
+
+                    this.toxiangyin = true,
+                    this.toxiangyin1 = true,
+
+                    this.guancha = false
                 this.isShowPopup = true
                 this.close = '取消查看';
                 (this.name = this.tabulation[index].name),
                     (this.age = this.tabulation[index].age),
-                    (this.image = this.tabulation[index].image)
+                    this.image = `<img src="${this.tabulation[index].image}" alt="${this.tabulation[index].name}的照片" style="max-width: 100%; max-height: 100%;">`;
+                // (this.image = this.tabulation[index].image)
+
             },
 
         }
