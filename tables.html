@@ -27,6 +27,7 @@
 
     table thead tr {
         height: 40px;
+        background-color: aliceblue;
     }
 
     table tbody tr {
@@ -97,8 +98,15 @@
         transform: translate(-50%, -50%);
     }
 
+    input:focus {
+        box-shadow: 2px 2px 20px 3px #fbc2eb !important;
+        outline-style: none !important;
+        box-shadow: 0 2px 5px #b5c9ec81, 0 0 6px #b5c9ec81 !important;
+    }
+
     input {
         margin-top: 15px;
+        outline-style: none !important;
     }
 
     #calculator {
@@ -237,9 +245,8 @@
             },
             // 删除
             deleteNews(index) {
-                const thit = this
                 if (confirm("确定删除吗")) {
-                    thit.tabulation.splice(index, 1);
+                    this.tabulation.splice(index, 1);
                 }
             },
             // 编辑
@@ -247,7 +254,6 @@
                 this.twoimg = true,
                     this.guancha = true
                 this.toxiangyin = false,
-                    this.toxiangyin1 = false,
                     this.increase = '确认修改'
                 this.close = '取消修改'
                 this.add = index
@@ -266,13 +272,14 @@
                             image: this.image,
                         });
                         console.log(this.tabulation)
-                        this.isShowPopup = false
 
                     }
                 } else {
                     this.tabulation[this.add].name = this.name;
                     this.tabulation[this.add].age = this.age;
                     this.tabulation[this.add].image = this.image;
+                    this.isShowPopup = false
+
                 }
             },
             // 搜索
@@ -291,10 +298,7 @@
             // 查看
             views(index) {
                 this.twoimg = false,
-
                     this.toxiangyin = true,
-                    this.toxiangyin1 = true,
-
                     this.guancha = false
                 this.isShowPopup = true
                 this.close = '取消查看';
@@ -302,7 +306,6 @@
                     (this.age = this.tabulation[index].age),
                     this.image = `<img src="${this.tabulation[index].image}" alt="${this.tabulation[index].name}的照片" style="max-width: 100%; max-height: 100%;">`;
                 // (this.image = this.tabulation[index].image)
-
             },
 
         }
