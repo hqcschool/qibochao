@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+</head>
+<style>
+    #box_son {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+    }
+
+    #box_boxson {
+        width: 100px;
+        height: 100px;
+        background-color: cornflowerblue;
+    }
+
+    table {
+        width: 90%;
+        margin: auto;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .bianshe {
+        background-color: lightblue;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <h1>{{message}}</h1>
+        <input type="text" v-model="shuj" name="" id="" />{{shuj}}
+        <button @click="fun">点击</button>
+        <a href="#" @click.once="funfun">222</a>
+        <div id="box_son" @click="oneBox">
+            <div id="box_boxson" @click.stop="twoBox"></div>
+        </div>
+        搜索:<input type="text" name="" id="" v-model="search" @keyup.enter="searchfun()">
+        <table border="1" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>名字</th>
+                    <th>图片</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr  v-for="(item,index) of flag?newarr:tabulation" :key="index"  :class="index.id%2==0?'bianshe':''">
+                    <th>{{ item.name }}</th>
+                    <th>
+                        <img :src="item.image" alt="" />
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 计算器 -->
+        <div id="calculator">
+            <input v-model="expression" @input="calculate" type="text" placeholder="输入表达式">
+            <p>{{ result }}</p>
+        </div>
+        <!-- 
+
+日报:
+今日学习:vue事件处理
+今日问题:(已解决)
+今日作业:完成度99%
+
+
+    在这段代码中，v-model指令用于双向绑定输入框的值和Vue实例中的expression数据，@input指令用于监听输入框的输入事件，并调用calculate方法来计算结果。最后，使用插值表达式{{ result }}来显示计算结果。
+
+这样，当用户在输入框中输入表达式时，Vue会自动更新expression的值，并调用calculate方法来计算结果，并将结果实时显示在页面上。
+ -->
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#box",
+        data: {
+            search: "",
+            newarr: [],
+            flag: false,
+
+            expression: '',
+            result: '',
+            message: "Hello Chao",
+            shuj: "",
+            tabulation: [
+                {
+                    name: "明",
+                    image:
+                        "https://img0.baidu.com/it/u=2144249378,1518177216&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=8d173e5be198fd00ce1f4a3257d69a02",
+                },
+                {
+                    name: "小美",
+                    image:
+                        "https://img1.baidu.com/it/u=2104662631,3018865509&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=189c27068f1f8b333af0ac78e0e25f2c",
+                },
+                {
+                    name: "红",
+                    image:
+                        "https://img0.baidu.com/it/u=4151108596,3054451010&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=a0f85b26254a3d89b2e52e546c934f66",
+                },
+                {
+                    name: "奶",
+                    image:
+                        "https://img0.baidu.com/it/u=3354213321,3716446572&fm=253&fmt=auto&app=138&f=JPEG?w=503&h=500",
+                },
+            ],
+        },
+
+        methods: {
+            searchfun() {
+                if (this.search != "") {
+                    this.flag = true;
+                    this.newarr = this.tabulation.filter((item) => {
+                        if (item.name.includes(this.search)) {
+                            return item;
+                        }
+                    });
+                    console.log(this.newarr);
+                } else {
+                    this.flag = false;
+                }
+            },
+            calculate() {
+                try {
+                    this.result = eval(this.expression);
+                } catch (error) {
+                    this.result = '请输入完整';
+                }
+            },
+            oneBox() {
+                console.log(99999);
+            },
+            twoBox() {
+                console.log(88888);
+            },
+            fun() {
+                console.log(21);
+                alert("什么档次");
+            },
+            funfun() {
+                console.log(11);
+            },
+        },
+    });
+</script>
+
+</html>

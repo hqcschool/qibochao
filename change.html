@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+
+</head>
+<style>
+    table thead tr {
+        height: 40px;
+        background-color: aliceblue;
+    }
+
+    table tbody tr {
+        height: 55px;
+    }
+
+    table {
+        width: 80%;
+        margin: auto;
+    }
+
+    button:nth-child(2) {
+        background-color: crimson;
+        border: 1px solid crimson;
+    }
+
+    button {
+        width: 70px;
+        height: 35px;
+        background-color: cornflowerblue;
+        border: 1px solid cornflowerblue;
+        margin-left: 10px;
+        border-radius: 10px;
+        color: #fff;
+    }
+
+    #forms {
+        line-height: 30px
+    }
+
+    .bianshe {
+        background-color: #fbc2eb;
+    }
+
+    .bianshe1 {
+        background-color: #86f6ed;
+    }
+
+    .quanxuan {
+        width: 20px;
+        height: 20px;
+    }
+
+    .selected {
+        background-color: pink !important;
+    }
+
+    .even-row {
+        background-color: #fbc2eb;
+    }
+
+    .odd-row {
+        background-color: #86f6ed;
+    }
+
+    #box table tbody tr:hover {
+        background-color: #fff !important;
+    }
+
+    select {
+        width: 70px;
+        border: none;
+        background-color: #F0F8FF;
+        /*去除select边框*/
+        border: 0;
+        background: transparent;
+        /*去除下拉框的三角下标*/
+        appearance: none;
+        -moz-appearance: none;
+        /* Firefox */
+        -webkit-appearance: none;
+        /* Safari 和 Chrome */
+        outline: none;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <!-- 添加 -->
+        <div id="forms">
+            姓名:<input type="text" v-model="name" id="wocaoq" /> <br />
+            年龄:<input type="text" v-model="age" /> <br />
+            <button @click="addItem" style="margin-top: 10px;">添加</button>
+        </div>
+        <!-- //表格 -->
+        <table border="1" cellspacing="0">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" v-model="selectAll" @change="selectAllItems"></th>
+                    <th>名字</th>
+                    <th @click="painian">
+                        <select name="fruit" v-model="fangshi">
+                            <option value="0">请选择</option>
+                            <option value="1">升序</option>
+                            <option value="2">降序</option>
+                        </select>
+                    </th>
+                    <th style="width: 320px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in tabulation"
+                    :class="{ selected: item.selected, 'even-row': index % 2 === 0, 'odd-row': index % 2 !== 0 }">
+
+                    <th><input type="checkbox" v-model="item.selected" @change="selectItem(item)"></th>
+                    <th>{{ item.name }}</th>
+                    <th>{{ item.age }}</th>
+                    <th>
+                        <button @click="shang(index)">上移</button>
+                        <button @click="deleteNews(index)">删除</button>
+                        <button @click="xia(index)">下移</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#box",
+        data: {
+            ziduan: 2,
+            fangshi: 0,
+            name: '',
+            age: '',
+            selectAll: false,
+            tabulation: [
+                {
+                    name: "小明",
+                    age: "18",
+                    image:
+                        "https://img0.baidu.com/it/u=2144249378,1518177216&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=8d173e5be198fd00ce1f4a3257d69a02",
+                },
+                {
+                    age: "28",
+                    name: "小美",
+                    image:
+                        "https://img1.baidu.com/it/u=2104662631,3018865509&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=189c27068f1f8b333af0ac78e0e25f2c",
+                },
+                {
+                    age: "20",
+                    name: "小红",
+                    image:
+                        "https://img0.baidu.com/it/u=4151108596,3054451010&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1690477200&t=a0f85b26254a3d89b2e52e546c934f66",
+                },
+                {
+                    age: "25",
+                    name: "小奶",
+                    image:
+                        "https://img0.baidu.com/it/u=3354213321,3716446572&fm=253&fmt=auto&app=138&f=JPEG?w=503&h=500",
+                },
+            ],
+        },
+
+        methods: {
+            //排序年龄
+            painian() {
+
+                if (this.ziduan == 2 && this.fangshi == 2) {
+                    this.tabulation.sort((a, b) => b.age - a.age);
+                } else if (this.ziduan == 2 && this.fangshi == 1) {
+                    this.tabulation.sort((a, b) => a.age - b.age);
+                }
+
+
+            },
+            // 上下
+            xia(index) {
+                if (index < this.tabulation.length - 1) {
+                    const temp = this.tabulation[index];
+                    this.tabulation.splice(index, 1);
+                    this.tabulation.splice(index + 1, 0, temp);
+                }
+            },
+            shang(index) {
+                if (index > 0) {
+                    const temp = this.tabulation[index];
+                    this.tabulation.splice(index, 1);
+                    this.tabulation.splice(index - 1, 0, temp);
+                }
+            },
+            // 添加
+            addItem() {
+
+                if (this.name && this.age) {
+                    this.tabulation.push({
+                        name: this.name,
+                        age: this.age,
+                    });
+                    this.name = ''
+                    this.age = ''
+                }
+            },
+            // 各色
+            selectAllItems: function () {
+                var self = this;
+                this.tabulation.forEach(function (item) {
+                    item.selected = self.selectAll;
+                });
+            },
+            selectItem: function (item) {
+                var allSelected = true;
+                this.tabulation.forEach(function (item) {
+                    if (!item.selected) {
+                        allSelected = false;
+                    }
+                });
+                this.selectAll = allSelected;
+            },
+            // 删除
+            deleteNews(index) {
+                if (confirm("确定删除吗")) {
+                    this.tabulation.splice(index, 1);
+                }
+            }
+        },
+    })
+</script>
+
+</html>

@@ -123,6 +123,19 @@
     #topboximg img {
         margin-top: 10px;
     }
+
+    .bianshe {
+        background-color: #fbc2eb;
+    }
+
+    .bianshe1 {
+        background-color: #86f6ed;
+    }
+
+    .quanxuan {
+        width: 20px;
+        height: 20px;
+    }
 </style>
 
 <body>
@@ -134,6 +147,7 @@
         <table border="1" cellspacing="0">
             <thead>
                 <tr>
+                    <th><input type="checkbox" name="" id="" class="quanxuan"></th>
                     <th>头像</th>
                     <th>名字</th>
                     <th>年龄</th>
@@ -141,7 +155,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in flag?newarr:tabulation">
+                <tr v-for="(item, index) in flag?newarr:tabulation" :class="index%2==0?'bianshe':'bianshe1'">
+                    <th><input type="checkbox" name="" id="" class="quanxuan"></th>
                     <th>
                         <img :src="item.image" alt="" />
                     </th>
