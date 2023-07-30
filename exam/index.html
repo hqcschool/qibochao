@@ -73,9 +73,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-
-
     /* 下边 样式 */
     #box_jiao {
         width: 100%;
@@ -329,7 +326,6 @@
                                     <p>{{item.wenzi}}</p>
                                     <p>尺码:均码</p>
                                 </div>
-
                             </div>
                             <div class="box_jiao_sonzongzuo">
                                 <p>￥{{item.age}}</p>
@@ -351,7 +347,6 @@
                         <div class="er">新人免邮</div>
                         <div class="san">?</div>
                     </div>
-
                 </div>
             </div>
             <div id="dibu">
@@ -387,7 +382,6 @@
             qwe: 0,
             coupon: 0,
             trade: [],
-            time: null,//时间
             countdown: {
                 minutes: 20,
                 seconds: 0
@@ -554,7 +548,6 @@
                 }
                 // this.qwe = this.qwe
                 console.log(this.coupon);
-
             },
             reduce(index) {
                 if (this.trade[index].shuliang == 1) {
@@ -577,11 +570,8 @@
                 this.countdown.minutes = 20
                 this.countdown.seconds = 0
                 let arr = this.tabulation[index]
-                arr.isChecked = false // 添加一个选中状态的属性
+                arr.isChecked = false // 添加选中状态的属性
                 this.trade.unshift(arr)
-
-                // let arr = this.tabulation[index]
-                // this.trade.unshift(arr)
             },
 
             //删除
