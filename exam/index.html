@@ -301,7 +301,7 @@
         </div>
         <div id="box_jiao">
             <div id="box_jiao_top">
-                <p>特卖商品 时间 {{time}}</p>
+                <p>特卖商品{{ countdown.minutes }}:{{ countdown.seconds }}</p>
                 <div class="xian"></div>
             </div>
             <div id="boxjiao_zhong">
@@ -321,7 +321,7 @@
                     <div id="" class="wuliao">
                         <div class="box_jiao_son" v-for="(item,index) in trade" :key="index">
                             <div class="box_jiao_sonzuo">
-                                <input type="checkbox" @change="togFun(index)" v-model="item.isChecked">
+                                <input type="checkbox" v-model="item.isChecked" @change="yfun(index)">
                                 <span style="font-size: 12px;margin-top: 25px;margin-left: -15px;"
                                     v-if="item.isChecked">🔒</span>
                                 <img :src="item.image" alt="">
@@ -388,6 +388,10 @@
             coupon: 0,
             trade: [],
             time: null,//时间
+            countdown: {
+                minutes: 20,
+                seconds: 0
+            },
             tabulation: [
                 {
                     delprice: "80.00",
@@ -502,8 +506,35 @@
                 return count;
             },
         },
+        mounted() {
+            this.startCountdown();
+        },
         methods: {
-            updateCount() {
+            yfun(index) {
+                this.countdown.minutes = 20
+                this.countdown.seconds = 0
+                this.table = this.trade[index].isChecked
+                if (this.trade[index].isChecked) {
+                    let arr = this.trade[index].age * this.trade[index].shuliang
+                    this.qwe += arr
+                } else {
+                    let wer = this.qwe - this.trade[index].age * this.trade[index].shuliang
+                    this.qwe = wer
+                }
+            },
+            startCountdown() {
+                setInterval(() => {
+                    if (this.countdown.seconds > 0) {
+                        this.countdown.seconds--;
+                    } else {
+                        if (this.countdown.minutes === 0) {
+                            clearInterval(this.interval);
+                        } else {
+                            this.countdown.minutes--;
+                            this.countdown.seconds = 59;
+                        }
+                    }
+                }, 1000);
             },
             discount() {
                 this.trade.forEach(item => {
@@ -535,46 +566,22 @@
             },
             jia(index) {
                 if (this.trade[index].shuliang == 10) {
-                    alert('没数量了')
+                    alert('没产品了')
                     this.trade[index].shuliang = 10
                 } else {
                     this.trade[index].shuliang++
                 }
             },
-            //时间
-            togFun(index) {
-                this.table = this.trade[index].isChecked
-                if (this.trade[index].isChecked) {
-                    let arr = this.trade[index].age * this.trade[index].shuliang
-                    this.qwe += arr
-                } else {
-                    let wer = this.qwe - this.trade[index].age * this.trade[index].shuliang
-                    this.qwe = wer
-                }
-                // 时间
-                if (this.trade[index].isChecked) {
-                    this.time = 10;
-
-                    this.times = setInterval(() => {
-                        this.time--;
-                        if (this.time === 0) {
-                            this.time = null;
-                            this.trade[index].isChecked = false
-                            this.qwe = 0
-                            clearInterval(this.times);
-                        }
-                    }, 1000);
-
-                } else {
-                    clearInterval(this.times);
-                    this.time = '';
-                }
-            },
-
             // 添加
             increase(index) {
+                this.countdown.minutes = 20
+                this.countdown.seconds = 0
                 let arr = this.tabulation[index]
+                arr.isChecked = false // 添加一个选中状态的属性
                 this.trade.unshift(arr)
+
+                // let arr = this.tabulation[index]
+                // this.trade.unshift(arr)
             },
 
             //删除
