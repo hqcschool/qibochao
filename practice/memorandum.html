@@ -193,7 +193,7 @@
                 if (confirm('确定删除吗')) {
                     this.savedMessages = this.savedMessages.filter(savedMessage => !savedMessage.checked);
                     localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages));
-                    this.itemCount = this.savedMessages.length; 
+                    this.itemCount = this.savedMessages.length;
                 }
             },
 
@@ -219,13 +219,7 @@
                 }
             },
         },
-        created() {
-            //chuanjianho
-            const savedMessages = localStorage.getItem('savedMessages');
-            if (savedMessages) {
-                this.savedMessages = JSON.parse(savedMessages);
-            }
-        }
+
     })
 </script>
 
