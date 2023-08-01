@@ -213,7 +213,6 @@
                 if (this.message) {
                     this.savedMessages.unshift({ text: this.message, checked: false });
                     localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages)); //cunchu
-
                     this.itemCount = this.savedMessages.length; // 更新物品的数量
                     this.message = '';//清
                 }
