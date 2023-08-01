@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #box {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        width: 40%;
+        height: 500px;
+        border: 3px solid pink;
+        margin: auto;
+        margin-top: 30px;
+        border-radius: 10px;
+    }
+
+    #separate {
+        width: 25px;
+        height: 30px;
+        border-radius: 50%;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    #boxtop {
+        display: flex;
+    }
+
+    #inp {
+        padding-left: 30px;
+        margin-right: 45px;
+        width: 80%;
+        height: 40px;
+        margin-left: 8%;
+        margin-top: 10px;
+        box-shadow: 0px 0px 5px 0px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    #yincang {
+        height: 398px;
+        overflow: auto;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    .yiyangde {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-top: 10px;
+
+        margin-left: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    ul li a {
+        /* margin-left: -150px; */
+        margin-left: 20px;
+        width: 320px;
+    }
+
+    ul li {
+        line-height: 50px;
+        display: flex;
+        /* justify-content: space-between; */
+        border-bottom: 1px solid #000;
+    }
+
+    ul li span {
+        margin-left: 170px;
+        display: none;
+    }
+
+    ul li:hover span {
+        display: block;
+    }
+
+    .strikethrough {
+        text-decoration: line-through;
+        color: #ddd;
+    }
+
+    .xian {
+        border-bottom: 3px solid #E6E6E6;
+
+        margin-top: 3px;
+    }
+
+    #boxdibu {
+        position: fixed;
+        bottom: 0px;
+        background-color: #ddd;
+        height: 45px;
+        width: 100%;
+        line-height: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #boxdibu p {
+        padding: 10px;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <div id="boxtop">
+            <input type="checkbox" name="" id="separate" v-model="selectAll">
+            <input type="text" name="" id="inp" placeholder="请输入" v-model="message" v-on:keyup.enter="handleEnter">
+        </div>
+        <div class="xian"></div>
+        <div id="yincang">
+            <ul v-for="(savedMessage,index) in savedMessages" :key="savedMessage">
+                <li>
+                    <input type="checkbox" class="yiyangde" v-model="savedMessage.checked">
+                    <a :class="{ strikethrough: savedMessage.checked }" href="#">{{savedMessage.text}}</a>
+                    <span @click="del(index)">❌</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 
+            日报：
+            今日学习：列表渲染，获取表单数据，vue指令，vue生命周期
+            今日问题：(已解决)
+            今日作业：完成度(99%)
+ -->
+        <div id="boxdibu">
+            <p>{{itemCount}}几个物品</p>
+            <p @click="deleteAll">{{quanbushhan}}</p>
+        </div>
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: "#box",
+        data: {
+            quanbushhan: '全部删除',
+            selectAll: false,
+            checked: false,
+            message: '',
+            savedMessages: [],
+            itemCount: 0
+        },
+        created() {
+            // 在Vue实例创建时从localStorage中加载已保存的消息
+            const savedMessages = localStorage.getItem('savedMessages');
+            if (savedMessages) {
+                this.savedMessages = JSON.parse(savedMessages);
+            }
+            // 计算物品的数量
+            this.itemCount = this.savedMessages.length;
+        },
+        watch: {
+            selectAll: function (value) {
+                this.savedMessages.forEach(savedMessage => {
+                    savedMessage.checked = value;
+                });
+            },
+        },
+        methods: {
+            // 选中删除
+            deleteAll() {
+                if (confirm('确定删除吗')) {
+                    this.savedMessages = this.savedMessages.filter(savedMessage => !savedMessage.checked);
+                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages));
+                }
+            },
+
+            // 删除
+            del(index) {
+                console.log(this.savedMessages, index)
+                if (confirm("确定删除吗")) {
+                    this.savedMessages.splice(index, 1);//shan
+                    localStorage.removeItem('savedMessages');//cunchu
+                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages));
+                    this.itemCount = this.savedMessages.length; // 更新物品的数量
+                }
+            },
+            // 添加
+            handleEnter() {
+                //判断是否是空 是空不添加 不是空放行
+                if (this.message) {
+                    this.savedMessages.unshift({ text: this.message, checked: false });
+                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages)); //cunchu
+
+                    this.itemCount = this.savedMessages.length; // 更新物品的数量
+                    this.message = '';//清
+                }
+            },
+        },
+        created() {
+            const savedMessages = localStorage.getItem('savedMessages');
+            if (savedMessages) {
+                this.savedMessages = JSON.parse(savedMessages);
+            }
+        }
+    })
+</script>
+
+</html>
