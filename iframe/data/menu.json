@@ -1,0 +1,30 @@
+{
+	{
+		id:1,
+		name:'父类菜单1',
+		url:'',
+		child:{
+			{
+				id:1,
+				name:'子菜单1',
+				url:'/view/c1.html'
+			},
+			{
+				id:2,
+				name:'子菜单2',
+				url:'/view/c2.html'
+			}
+			{
+				id:3,
+				name:'子菜单3',
+				url:'/view/c3.html'
+			}
+		}
+	},
+	{
+		id:2,
+		name:'父类菜单2',
+		url:'/view/p1.html',
+		child:{}
+	}
+}
