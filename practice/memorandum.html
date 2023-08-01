@@ -77,18 +77,26 @@
     ul li a {
         /* margin-left: -150px; */
         margin-left: 20px;
-        width: 320px;
+        width: 490px;
+        height: 50px;
+        -webkit-line-clamp: 1;
+        /* 设置几行  */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
 
     ul li {
         line-height: 50px;
         display: flex;
-        /* justify-content: space-between; */
         border-bottom: 1px solid #000;
     }
 
     ul li span {
-        margin-left: 170px;
+        width: 40px;
+        float: right;
         display: none;
     }
 
