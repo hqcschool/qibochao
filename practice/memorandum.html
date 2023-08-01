@@ -164,7 +164,7 @@
             itemCount: 0
         },
         created() {
-            // 在Vue实例创建时从localStorage中加载已保存的消息
+            // 创建时从localStorage中加载已保存的消息
             const savedMessages = localStorage.getItem('savedMessages');
             if (savedMessages) {
                 this.savedMessages = JSON.parse(savedMessages);
