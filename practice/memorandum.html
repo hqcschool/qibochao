@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.staticfile.org/vue/2.7.0/vue.min.js"></script>
 </head>
@@ -87,7 +87,6 @@
         text-overflow: ellipsis;
     }
 
-
     ul li {
         line-height: 50px;
         display: flex;
@@ -110,8 +109,7 @@
     }
 
     .xian {
-        border-bottom: 3px solid #E6E6E6;
-
+        border-bottom: 3px solid #e6e6e6;
         margin-top: 3px;
     }
 
@@ -131,17 +129,18 @@
     }
 </style>
 
+
 <body>
     <div id="box">
         <div id="boxtop">
-            <input type="checkbox" name="" id="separate" v-model="selectAll">
-            <input type="text" name="" id="inp" placeholder="请输入" v-model="message" v-on:keyup.enter="handleEnter">
+            <input type="checkbox" name="" id="separate" v-model="selectAll" />
+            <input type="text" name="" id="inp" placeholder="请输入" v-model="message" v-on:keyup.enter="handleEnter" />
         </div>
         <div class="xian"></div>
         <div id="yincang">
             <ul v-for="(savedMessage,index) in savedMessages" :key="savedMessage">
                 <li>
-                    <input type="checkbox" class="yiyangde" v-model="savedMessage.checked">
+                    <input type="checkbox" class="yiyangde" v-model="savedMessage.checked" />
                     <a :class="{ strikethrough: savedMessage.checked }" href="#">{{savedMessage.text}}</a>
                     <span @click="del(index)">❌</span>
                 </li>
@@ -155,6 +154,9 @@
  -->
         <div id="boxdibu">
             <p>{{itemCount}}几个物品</p>
+            <p>选中</p>
+            <!-- 点击选中 判断input框是否 true -->
+            <p>未选中</p>
             <p @click="deleteAll">{{quanbushhan}}</p>
         </div>
     </div>
@@ -164,16 +166,16 @@
     new Vue({
         el: "#box",
         data: {
-            quanbushhan: '全部删除',
+            quanbushhan: "全部删除",
             selectAll: false,
             checked: false,
-            message: '',
+            message: "",
             savedMessages: [],
-            itemCount: 0
+            itemCount: 0,
         },
         created() {
             // 创建时从localStorage中加载已保存的消息
-            const savedMessages = localStorage.getItem('savedMessages');
+            const savedMessages = localStorage.getItem("savedMessages");
             if (savedMessages) {
                 this.savedMessages = JSON.parse(savedMessages);
             }
@@ -182,7 +184,7 @@
         },
         watch: {
             selectAll: function (value) {
-                this.savedMessages.forEach(savedMessage => {
+                this.savedMessages.forEach((savedMessage) => {
                     savedMessage.checked = value;
                 });
             },
@@ -190,20 +192,27 @@
         methods: {
             // 选中删除
             deleteAll() {
-                if (confirm('确定删除吗')) {
-                    this.savedMessages = this.savedMessages.filter(savedMessage => !savedMessage.checked);
-                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages));
+                if (confirm("确定删除吗")) {
+                    this.savedMessages = this.savedMessages.filter(
+                        (savedMessage) => !savedMessage.checked
+                    );
+                    localStorage.setItem(
+                        "savedMessages",
+                        JSON.stringify(this.savedMessages)
+                    );
                     this.itemCount = this.savedMessages.length;
                 }
             },
-
             // 删除
             del(index) {
-                console.log(this.savedMessages, index)
+                console.log(this.savedMessages, index);
                 if (confirm("确定删除吗")) {
-                    this.savedMessages.splice(index, 1);//shan
-                    localStorage.removeItem('savedMessages');//cunchu
-                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages));
+                    this.savedMessages.splice(index, 1); //shan
+                    localStorage.removeItem("savedMessages"); //cunchu
+                    localStorage.setItem(
+                        "savedMessages",
+                        JSON.stringify(this.savedMessages)
+                    );
                     this.itemCount = this.savedMessages.length; // 更新物品的数量
                 }
             },
@@ -212,14 +221,16 @@
                 //判断是否是空 是空不添加 不是空放行
                 if (this.message) {
                     this.savedMessages.unshift({ text: this.message, checked: false });
-                    localStorage.setItem('savedMessages', JSON.stringify(this.savedMessages)); //cunchu
+                    localStorage.setItem(
+                        "savedMessages",
+                        JSON.stringify(this.savedMessages)
+                    ); //cunchu
                     this.itemCount = this.savedMessages.length; // 更新物品的数量
-                    this.message = '';//清
+                    this.message = ""; //清
                 }
             },
         },
-
-    })
+    });
 </script>
 
 </html>
